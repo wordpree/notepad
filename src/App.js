@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Layout from './components/Layout/Layout';
 
-class App extends Component {
-  render() {
+const App = ()=> {
+
     return (
-      <div className="App">
-
-      </div>
+        <Layout />
     );
-  }
 }
 
 export default App;
