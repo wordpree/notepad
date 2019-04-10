@@ -16,6 +16,15 @@ const styles = {
     color: '#fff',
     backgroundColor: '#9c27b0',
   },
+  card: {
+    backgroundColor:'#5c6bc0',
+  },
+  title: {
+    color:'white',
+  },
+  subheader: {
+    color:'white',
+  }
 };
 
 
@@ -24,8 +33,17 @@ const Note = ({singleInfo,classes})=>{
   return (
 
       <Card className={classes.card}>
-        <CardHeader title={singleInfo.title} subheader={singleInfo.time}>
-          <Avatar className={classes.avatar}>{singleInfo.author}</Avatar>
+        <CardHeader
+          classes={{
+            title: classes.title,
+            subheader: classes.subheader
+          }}
+          title={singleInfo.title}
+          subheader={singleInfo.time}
+          avatar={
+            <Avatar className={classes.avatar}>{singleInfo.author}</Avatar>
+          }
+        >
         </CardHeader>
         <CardMedia></CardMedia>
         <CardContent>
