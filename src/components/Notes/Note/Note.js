@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import Rating from 'material-ui-rating';
 
 const styles = {
@@ -18,6 +19,9 @@ const styles = {
   },
   card: {
     backgroundColor:'#5c6bc0',
+    '&:hover': {
+      backgroundColor: fade('#5c6bc0',0.9)
+    }
   },
   title: {
     color:'white',
