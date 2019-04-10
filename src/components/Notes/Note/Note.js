@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
@@ -31,7 +32,14 @@ const styles = {
   },
   ficon: {
     color: '#9fa8da'
-  }
+  },
+  dicon: {
+    color:'#283593'
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
 };
 
 
@@ -45,7 +53,7 @@ const Note = ({singleInfo,classes})=>{
             title: classes.title,
             subheader: classes.subheader
           }}
-          title={singleInfo.title}
+          title={singleInfo.heading}
           subheader={singleInfo.time}
           avatar={
             <Avatar className={classes.avatar}>{singleInfo.author}</Avatar>
@@ -58,9 +66,12 @@ const Note = ({singleInfo,classes})=>{
             {singleInfo.content}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions className={classes.actions}>
           <IconButton aria-label="Add to favorites" >
             <FavoriteIcon className={classes.ficon}/>
+          </IconButton>
+          <IconButton aria-label="Delete">
+            <DeleteIcon className={classes.dicon}/>
           </IconButton>
         </CardActions>
       </Card>
