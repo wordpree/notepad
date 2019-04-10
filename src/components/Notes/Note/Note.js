@@ -7,15 +7,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import Rating from 'material-ui-rating';
 
 const styles = {
   avatar: {
     margin: 10,
     color: '#fff',
-    backgroundColor: '#9c27b0',
+    backgroundColor: '#FF7A66',
   },
   card: {
     backgroundColor:'#5c6bc0',
@@ -28,6 +28,9 @@ const styles = {
   },
   subheader: {
     color:'white',
+  },
+  ficon: {
+    color: '#9fa8da'
   }
 };
 
@@ -51,11 +54,15 @@ const Note = ({singleInfo,classes})=>{
         </CardHeader>
         <CardMedia></CardMedia>
         <CardContent>
-          <div className='content'>
-            <p>{singleInfo.content}</p>
-          </div>
+          <Typography component='p'>
+            {singleInfo.content}
+          </Typography>
         </CardContent>
-        <Rating value={3} max={5} />
+        <CardActions>
+          <IconButton aria-label="Add to favorites" >
+            <FavoriteIcon className={classes.ficon}/>
+          </IconButton>
+        </CardActions>
       </Card>
 
   );

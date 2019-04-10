@@ -9,7 +9,6 @@ const styles = theme=> ({
     margin:'auto',
     justifyContent:'center',
     [theme.breakpoints.up('md')]: {
-      maxWidth:'85%',
       justifyContent:'flex-start',
     },
   },
