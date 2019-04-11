@@ -35,30 +35,28 @@ class NoteBuild extends Component {
     });
     e.preventDefault();
    }
-   
+
   componentWillMount(){
 
     const docRef= firebase.firestore().collection('notepad');
-    docRef.get()
-          .then((snapshots)=>snapshots.forEach(
-            doc=>{
-
-              let tempState =
-                [...this.state.notes,
-                  {
-                    heading: doc.data().heading,
-                    author:  doc.data().author,
-                    content: doc.data().content
-                  }
-                ];
-              this.setState({
-                notes:tempState
-              })
-            }
-          ))
-          .then(()=>console.log('read data successfully'))
-          .catch(err=>{console.log(err)});
-
+    docRef.onSnapshot(
+      docs=> docs.docChanges().forEach(
+        change=>{
+          if (change.type === 'added') {
+            let tempState =
+              [...this.state.notes,
+                {
+                  heading: change.doc.data().heading,
+                  author:  change.doc.data().author,
+                  content: change.doc.data().content
+                }
+              ];
+            this.setState({
+              notes:tempState
+            })
+          }
+        })
+    )
   }
 
   getCurrentData(){
