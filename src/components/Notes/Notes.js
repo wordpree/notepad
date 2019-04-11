@@ -21,8 +21,8 @@ const styles = theme=> ({
 
 const Notes = ({info,classes})=>{
 
-  const notes = info.map((item)=>
-    <Grid key={item.id} item xs={12} md={6} lg={4} className={classes.item} >
+  const notes = info.map((item,index)=>
+    <Grid key={index} item xs={12} md={6} lg={4} className={classes.item} >
       <Note singleInfo={item} />
     </Grid>
   );

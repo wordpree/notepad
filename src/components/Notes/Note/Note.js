@@ -34,7 +34,10 @@ const styles = {
     color: '#9fa8da'
   },
   dicon: {
-    color:'#283593'
+    color:'#283593',
+    '&:hover':{
+      color:'#1a237e'
+    }
   },
   actions: {
     display: 'flex',
@@ -60,7 +63,7 @@ const Note = ({singleInfo,classes})=>{
           }
         >
         </CardHeader>
-        <CardMedia></CardMedia>
+        {/*<CardMedia></CardMedia>*/}
         <CardContent>
           <Typography component='p'>
             {singleInfo.content}

@@ -1,5 +1,5 @@
 import React from 'react';
-import muitheme from '../../Util/MuiTheme';
+import muitheme from '../../Util/muiTheme';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles,MuiThemeProvider} from '@material-ui/core/styles';

@@ -29,7 +29,7 @@ const styles= theme => ({
     }
   }
 });
-const Form = ({classes,onchange,onsubmit})=>{
+const Form = ({classes,onchange,onsubmit,currentData})=>{
 
   return (
     <React.Fragment>
@@ -43,16 +43,19 @@ const Form = ({classes,onchange,onsubmit})=>{
       </Typography>
       <form className={classes.form} onSubmit={onsubmit}>
         {
-          ['heading','author','content'].map(
-            (item)=><TextField
+          Object.keys(currentData).map(
+            (item)=>
+              <TextField
                   className={classes.textField}
                   key ={item}
                   id={item}
+                  name={item}
                   label={item}
+                  value={currentData[item]}
                   margin="dense"
                   fullWidth={item==='content'}
                   onChange = {onchange}
-                />
+              />
           )
         }
         <input
