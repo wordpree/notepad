@@ -81,7 +81,7 @@ const Header = ({classes})=>{
             <InputBase
               className={classes.inputInput}
               classes={{root:classes.inputRoot}}
-              placeholder="Search…" />
+              placeholder="title,author,date…" />
           </div>
           <div className={classes.grow} />
           <Tooltip title="Add" placement="bottom" TransitionComponent={Zoom}>

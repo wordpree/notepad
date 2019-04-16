@@ -21,12 +21,10 @@ class NoteBuild extends Component {
 
   handleDelete(id){
 
-    firebase.firestore().collection('notepad').doc(id).delete().then(function() {
-      console.log("Document successfully deleted!");
-    })
-    .catch(function(error) {
-      console.error("Error removing document: ", error);
-    });
+    firebase.firestore().collection('notepad').doc(id).delete()
+    .catch(
+      error=> {console.error('Error removing document: ', error)}
+    );
   }
 
   handleSubmit(e){
@@ -37,7 +35,9 @@ class NoteBuild extends Component {
       author: this.state.author,
       content:this.state.content,
     })
-    .catch(err=>{console.log(err)});
+    .catch(
+      error=> {console.error('Error adding document: ', error)}
+    );
     this.setState({
       heading:'',
       author:'',
@@ -52,6 +52,7 @@ class NoteBuild extends Component {
     docRef.onSnapshot(
       docs=> docs.docChanges().forEach(
         change=>{
+
           let tempState;
           if (change.type === 'added') {
             tempState =
