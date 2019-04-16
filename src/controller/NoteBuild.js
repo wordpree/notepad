@@ -19,15 +19,25 @@ class NoteBuild extends Component {
     });
   }
 
+  handleDelete(id){
+
+    firebase.firestore().collection('notepad').doc(id).delete().then(function() {
+      console.log("Document successfully deleted!");
+    })
+    .catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+  }
+
   handleSubmit(e){
 
-    const docRef= firebase.firestore().collection('notepad');
-    docRef.add({
+    firebase.firestore().collection('notepad')
+    .add({
       heading:this.state.heading,
       author: this.state.author,
       content:this.state.content,
-    }).then(()=>console.log('set data successfully'))
-      .catch(err=>{console.log(err)});
+    })
+    .catch(err=>{console.log(err)});
     this.setState({
       heading:'',
       author:'',
@@ -42,19 +52,30 @@ class NoteBuild extends Component {
     docRef.onSnapshot(
       docs=> docs.docChanges().forEach(
         change=>{
+          let tempState;
           if (change.type === 'added') {
-            let tempState =
+            tempState =
               [...this.state.notes,
                 {
                   heading: change.doc.data().heading,
-                  author:  change.doc.data().author,
-                  content: change.doc.data().content
+                  author : change.doc.data().author,
+                  content: change.doc.data().content,
+                  id     : change.doc.id,
                 }
               ];
-            this.setState({
-              notes:tempState
-            })
           }
+
+          if (change.type === 'removed'){
+            tempState =
+              this.state.notes.filter(
+                item=> change.doc.id !== item.id
+              );
+          }
+
+          this.setState({
+            notes:tempState
+          })
+
         })
     )
   }
@@ -76,7 +97,7 @@ class NoteBuild extends Component {
           onsubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
         />
-        <Notes info = {this.state.notes} />
+        <Notes info = {this.state.notes} noteDelete={this.handleDelete.bind(this)}/>
       </div>
     );
   }

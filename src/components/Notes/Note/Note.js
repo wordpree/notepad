@@ -46,7 +46,7 @@ const styles = {
 };
 
 
-const Note = ({singleInfo,classes})=>{
+const Note = ({singleInfo,classes,onDelete})=>{
 
   return (
 
@@ -73,7 +73,7 @@ const Note = ({singleInfo,classes})=>{
           <IconButton aria-label="Add to favorites" >
             <FavoriteIcon className={classes.ficon}/>
           </IconButton>
-          <IconButton aria-label="Delete">
+          <IconButton aria-label="Delete" onClick={onDelete}>
             <DeleteIcon className={classes.dicon}/>
           </IconButton>
         </CardActions>
