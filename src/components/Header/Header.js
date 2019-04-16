@@ -6,10 +6,6 @@ import { withStyles,MuiThemeProvider} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
@@ -83,12 +79,6 @@ const Header = ({classes})=>{
               classes={{root:classes.inputRoot}}
               placeholder="title,author,date…" />
           </div>
-          <div className={classes.grow} />
-          <Tooltip title="Add" placement="bottom" TransitionComponent={Zoom}>
-            <Fab color="primary" aria-label="Add" size="small">
-              <AddIcon />
-            </Fab>
-          </Tooltip>
         </Toolbar>
       </AppBar>
     </MuiThemeProvider>

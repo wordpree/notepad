@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
+import Tooltip from '@material-ui/core/Tooltip';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const styles = {
@@ -71,10 +73,14 @@ const Note = ({singleInfo,classes,onDelete})=>{
         </CardContent>
         <CardActions className={classes.actions}>
           <IconButton aria-label="Add to favorites" >
-            <FavoriteIcon className={classes.ficon}/>
+            <Tooltip title="Like" placement="bottom" TransitionComponent={Zoom}>
+              <FavoriteIcon className={classes.ficon}/>
+            </Tooltip>
           </IconButton>
           <IconButton aria-label="Delete" onClick={onDelete}>
-            <DeleteIcon className={classes.dicon}/>
+            <Tooltip title="Delete" placement="bottom" TransitionComponent={Zoom}>
+              <DeleteIcon className={classes.dicon}/>
+            </Tooltip>
           </IconButton>
         </CardActions>
       </Card>
