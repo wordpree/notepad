@@ -1,8 +1,8 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import FormBase from '../../Util/FormBase';
 
 const styles= theme => ({
   form: {
@@ -42,22 +42,7 @@ const Form = ({classes,onchange,onsubmit,currentData})=>{
         Compose Your Note Below
       </Typography>
       <form className={classes.form} onSubmit={onsubmit}>
-        {
-          Object.keys(currentData).map(
-            (item)=>
-              <TextField
-                  className={classes.textField}
-                  key ={item}
-                  id={item}
-                  name={item}
-                  label={item}
-                  value={currentData[item]}
-                  margin="dense"
-                  fullWidth={item==='content'}
-                  onChange = {onchange}
-              />
-          )
-        }
+        <FormBase currentData={currentData} classes={classes} onChange = {onchange}/>
         <input
         id="note-submit"
         type="submit"
