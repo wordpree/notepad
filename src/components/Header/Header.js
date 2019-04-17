@@ -16,6 +16,11 @@ const styles = theme => ({
       display: 'block',
     },
   },
+  toolbar: {
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
+  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -23,8 +28,7 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing.unit * 2,
-    marginLeft: 0,
+    margin:'auto',
     width: '84%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
@@ -57,7 +61,9 @@ const styles = theme => ({
     },
   },
   grow: {
-    flexGrow: 1,
+    [theme.breakpoints.up('sm')]: {
+      flexGrow: 1,
+    },
   },
 });
 
@@ -66,10 +72,11 @@ const Header = ({classes})=>{
   return (
     <MuiThemeProvider theme={muitheme}>
       <AppBar position='static' color='default'>
-        <Toolbar >
+        <Toolbar className={classes.toolbar} >
           <Typography className={classes.title} variant="h6" color="inherit" >
-              Notepad
+              My Awesome Notepad
           </Typography>
+          <div className={classes.grow} />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
