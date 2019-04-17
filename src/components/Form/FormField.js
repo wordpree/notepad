@@ -7,7 +7,6 @@ const FormBase = ({currentData,classes,onChange})=>{
     Object.keys(currentData).map(
       (item)=>
         <TextField
-            className={classes.textField}
             key ={item}
             id={item}
             name={item}
