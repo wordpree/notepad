@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
-const FormBase = ({currentData,classes,onChange})=>{
+const FormField = ({currentData,onChange})=>{
 
   return (
     Object.keys(currentData).map(
@@ -20,4 +20,4 @@ const FormBase = ({currentData,classes,onChange})=>{
   )
 }
 
-export default FormBase;
+export default FormField;

@@ -16,16 +16,14 @@ const FormSubmit = ({classes})=> {
 
    return (
      <React.Fragment>
-       <Button color="primary" style={{display:'none'}} >
-         Cancel
-       </Button>
+
        <input
          id="note-submit"
          type="submit"
          style={{display:'none'}}
        />
        <label htmlFor="note-submit">
-         <Button variant="outlined" component="span" className={classes.button}>
+         <Button variant="outlined" component="span" className={classes.button} >
            add new
          </Button>
        </label>
