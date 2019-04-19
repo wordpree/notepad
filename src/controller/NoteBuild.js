@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Notes from '../components/Notes/Notes';
 import Form from '../components/Form/Form';
+import DialogSet from '../components/DialogSet/DialogSet';
+import Typography from '@material-ui/core/Typography';
 import firebase from '../Util/firebase';
 
 class NoteBuild extends Component {
@@ -10,6 +12,18 @@ class NoteBuild extends Component {
     heading:'',
     author:'',
     content:'',
+    open:false,
+    dialogHeading:'',
+    dialogAuthor:'',
+    dialogContent:'',
+    dialogId:'',
+  }
+
+  handleDialogClose(){
+
+    this.setState({
+        open:false,
+    });
   }
 
   handleChange(e){
@@ -17,6 +31,18 @@ class NoteBuild extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  handleEdit(field){
+
+    this.setState({
+      open: true,
+      dialogHeading:field.heading,
+      dialogAuthor :field.author,
+      dialogContent:field.content,
+      dialogId     :field.id,
+    });
+
   }
 
   handleDelete(id){
@@ -46,10 +72,25 @@ class NoteBuild extends Component {
     e.preventDefault();
    }
 
+  handleDialogUpdate(e){
+
+    e.preventDefault();
+    firebase.firestore().collection('notepad').doc(this.state.dialogId)
+    .update({
+      heading:this.state.dialogHeading,
+      author: this.state.dialogAuthor,
+      content:this.state.dialogContent,
+    })
+    .catch(function(error) {
+        console.error('Error updating document: ', error);
+    });
+    this.setState({open:false});
+  }
+
   componentWillMount(){
 
     const docRef= firebase.firestore().collection('notepad');
-    docRef.onSnapshot(
+    docRef.onSnapshot( //listen rfor eal time data updating
       docs=> docs.docChanges().forEach(
         change=>{
 
@@ -65,14 +106,25 @@ class NoteBuild extends Component {
                 }
               ];
           }
-
           if (change.type === 'removed'){
             tempState =
               this.state.notes.filter(
                 item=> change.doc.id !== item.id
               );
           }
-
+          if (change.type === 'modified'){
+            tempState =
+              this.state.notes.map(
+                item=> {
+                  if (change.doc.id === item.id) {
+                    item.heading =change.doc.data().heading;
+                    item.author  =change.doc.data().author;
+                    item.content =change.doc.data().content;
+                  }
+                  return item;
+                }
+              );
+          }
           this.setState({
             notes:tempState
           })
@@ -89,16 +141,43 @@ class NoteBuild extends Component {
     }
   }
 
+  getDialogData(){
+    return {
+      dialogHeading:this.state.dialogHeading,
+      dialogAuthor:this.state.dialogAuthor,
+      dialogContent:this.state.dialogContent,
+    }
+  }
+
   render() {
 
     return (
       <div className="App">
+        <Typography
+              variant='h5'
+              paragraph={true}
+              align='center'
+              style={{marginTop:'1em',}}
+        >
+          Compose Your Note Below
+        </Typography>
         <Form
-          onchange={this.handleChange.bind(this)}
-          onsubmit={this.handleSubmit.bind(this)}
+          onChange={this.handleChange.bind(this)}
+          onSubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
         />
-        <Notes info = {this.state.notes} noteDelete={this.handleDelete.bind(this)}/>
+        <Notes
+          info = {this.state.notes}
+          noteDelete={this.handleDelete.bind(this)}
+          noteEdit={this.handleEdit.bind(this)}
+        />
+        <DialogSet
+          data={this.getDialogData()}
+          open={this.state.open}
+          onDialogClose={this.handleDialogClose.bind(this)}
+          onDialogUpdate={this.handleDialogUpdate.bind(this)}
+          onChange={this.handleChange.bind(this)}
+        />
       </div>
     );
   }
