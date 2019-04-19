@@ -19,10 +19,13 @@ class NoteBuild extends Component {
     dialogId:'',
   }
 
-  handleDialogClose(){
-
+  dialogStateReset(){
     this.setState({
         open:false,
+        dialogHeading:'',
+        dialogAuthor:'',
+        dialogContent:'',
+        dialogId:'',
     });
   }
 
@@ -72,6 +75,10 @@ class NoteBuild extends Component {
     e.preventDefault();
    }
 
+   handleDialogClose(){
+     this.dialogStateReset();
+   }
+
   handleDialogUpdate(e){
 
     e.preventDefault();
@@ -84,7 +91,7 @@ class NoteBuild extends Component {
     .catch(function(error) {
         console.error('Error updating document: ', error);
     });
-    this.setState({open:false});
+    this.dialogStateReset();
   }
 
   componentWillMount(){
