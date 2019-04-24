@@ -20,13 +20,14 @@ const styles = theme=> ({
 })
 
 const Notes = (props)=>{
-  let {info,classes,noteDelete,noteEdit} = props;
+  let {info,classes,noteDelete,noteEdit,noteLike} = props;
   const notes = info.map(item=>
     <Grid key={item.id} item xs={12} md={6} lg={4} className={classes.item} >
       <Note
         singleInfo={item}
         onDelete={()=>noteDelete(item.id)}
         onEdit={()=>noteEdit(item)}
+        onLike={()=>noteLike(item.id,item.like)}
       />
     </Grid>
   );
