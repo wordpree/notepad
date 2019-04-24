@@ -7,13 +7,15 @@ const FormField = ({currentData,onChange})=>{
     Object.keys(currentData).map(
       (item)=>
         <TextField
+            style={{marginLeft:'1em'}}
             key ={item}
             id={item}
             name={item}
             label={item}
             value={currentData[item]}
             margin="dense"
-            fullWidth={item==='content'}
+            fullWidth=
+            {item==='content' || item==='dialogContent'}
             onChange = {onChange}
         />
     )
