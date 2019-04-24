@@ -19,6 +19,18 @@ class NoteBuild extends Component {
     dialogId:'',
   }
 
+  hanldeFavoriteIconClick(id,like){
+
+    firebase.firestore().collection('notepad').doc(id)
+    .update({
+      like:!like,
+    })
+    .catch(function(error) {
+        console.error('Error updating document: ', error);
+    });
+
+  }
+
   dialogStateReset(){
     this.setState({
         open:false,
@@ -97,7 +109,7 @@ class NoteBuild extends Component {
   componentWillMount(){
 
     const docRef= firebase.firestore().collection('notepad');
-    docRef.onSnapshot( //listen rfor eal time data updating
+    docRef.onSnapshot( //listen for real time data updating
       docs=> docs.docChanges().forEach(
         change=>{
 
@@ -110,6 +122,7 @@ class NoteBuild extends Component {
                   author : change.doc.data().author,
                   content: change.doc.data().content,
                   id     : change.doc.id,
+                  like   : change.doc.data().like,
                 }
               ];
           }
@@ -127,6 +140,7 @@ class NoteBuild extends Component {
                     item.heading =change.doc.data().heading;
                     item.author  =change.doc.data().author;
                     item.content =change.doc.data().content;
+                    item.like =change.doc.data().like;
                   }
                   return item;
                 }
@@ -177,6 +191,7 @@ class NoteBuild extends Component {
           info = {this.state.notes}
           noteDelete={this.handleDelete.bind(this)}
           noteEdit={this.handleEdit.bind(this)}
+          noteLike={this.hanldeFavoriteIconClick.bind(this)}
         />
         <DialogSet
           data={this.getDialogData()}

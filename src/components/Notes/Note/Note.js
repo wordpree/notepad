@@ -54,7 +54,7 @@ const styles = {
 
 const Note = (props)=>{
 
-  let {singleInfo,classes,onDelete,onEdit} = props;
+  let {singleInfo,classes,onDelete,onEdit,onLike} = props;
   return (
     <React.Fragment>
       <Card className={classes.card}>
@@ -77,7 +77,7 @@ const Note = (props)=>{
           </Typography>
         </CardContent>
         <CardActions className={classes.actions}>
-          <Fab aria-label="Add to favorites" size='small' >
+          <Fab aria-label="Add to favorites" size='small' onClick={onLike} color={singleInfo.like? 'primary':'inherit'} >
             <Tooltip title="Like" placement="bottom" TransitionComponent={Zoom}>
               <FavoriteIcon className={classes.ficon}/>
             </Tooltip>
