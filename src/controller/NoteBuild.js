@@ -13,9 +13,9 @@ class NoteBuild extends Component {
     author:'',
     content:'',
     open:false,
-    dialogHeading:'',
-    dialogAuthor:'',
-    dialogContent:'',
+    dialogheading:'',
+    dialogauthor:'',
+    dialogcontent:'',
     dialogId:'',
   }
 
@@ -34,9 +34,9 @@ class NoteBuild extends Component {
   dialogStateReset(){
     this.setState({
         open:false,
-        dialogHeading:'',
-        dialogAuthor:'',
-        dialogContent:'',
+        dialogheading:'',
+        dialogauthor:'',
+        dialogcontent:'',
         dialogId:'',
     });
   }
@@ -52,9 +52,9 @@ class NoteBuild extends Component {
 
     this.setState({
       open: true,
-      dialogHeading:field.heading,
-      dialogAuthor :field.author,
-      dialogContent:field.content,
+      dialogheading:field.heading,
+      dialogauthor :field.author,
+      dialogcontent:field.content,
       dialogId     :field.id,
     });
 
@@ -96,9 +96,9 @@ class NoteBuild extends Component {
     e.preventDefault();
     firebase.firestore().collection('notepad').doc(this.state.dialogId)
     .update({
-      heading:this.state.dialogHeading,
-      author: this.state.dialogAuthor,
-      content:this.state.dialogContent,
+      heading:this.state.dialogheading,
+      author: this.state.dialogauthor,
+      content:this.state.dialogcontent,
     })
     .catch(function(error) {
         console.error('Error updating document: ', error);
@@ -164,9 +164,9 @@ class NoteBuild extends Component {
 
   getDialogData(){
     return {
-      dialogHeading:this.state.dialogHeading,
-      dialogAuthor:this.state.dialogAuthor,
-      dialogContent:this.state.dialogContent,
+      dialogheading:this.state.dialogheading,
+      dialogauthor:this.state.dialogauthor,
+      dialogcontent:this.state.dialogcontent,
     }
   }
 

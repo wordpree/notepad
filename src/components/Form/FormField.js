@@ -11,7 +11,7 @@ const FormField = ({currentData,onChange})=>{
             key ={item}
             id={item}
             name={item}
-            label={item}
+            label={item.replace('dialog','')}
             value={currentData[item]}
             margin="dense"
             fullWidth=
