@@ -50,6 +50,9 @@ const styles = {
     justifyContent: 'space-between',
     padding: '1.25em'
   },
+  ficonActive:{
+    backgroundColor:'red'
+  },
 };
 
 const Note = (props)=>{
