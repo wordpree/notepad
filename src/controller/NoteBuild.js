@@ -3,7 +3,9 @@ import Notes from '../components/Notes/Notes';
 import Form from '../components/Form/Form';
 import DialogSet from '../components/DialogSet/DialogSet';
 import Typography from '@material-ui/core/Typography';
-import firebase from '../Util/firebase';
+import {firebaseInit,firebaseDbDelete,firebaseDbAdd,firebaseDbUpdate,firebaseDbChangeType} from '../Util/firebase';
+
+let firebaseColRef;
 
 class NoteBuild extends Component {
 
@@ -20,15 +22,8 @@ class NoteBuild extends Component {
   }
 
   hanldeFavoriteIconClick(id,like){
-
-    firebase.firestore().collection('notepad').doc(id)
-    .update({
-      like:!like,
-    })
-    .catch(function(error) {
-        console.error('Error updating document: ', error);
-    });
-
+    //Favorite icon update
+    firebaseDbUpdate({like:!like},firebaseColRef,id)
   }
 
   dialogStateReset(){
@@ -42,14 +37,14 @@ class NoteBuild extends Component {
   }
 
   handleChange(e){
-
+    //input area
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
   handleEdit(field){
-
+    //note edit
     this.setState({
       open: true,
       dialogheading:field.heading,
@@ -61,24 +56,16 @@ class NoteBuild extends Component {
   }
 
   handleDelete(id){
-
-    firebase.firestore().collection('notepad').doc(id).delete()
-    .catch(
-      error=> {console.error('Error removing document: ', error)}
-    );
+    //note delete
+    firebaseDbDelete(id,firebaseColRef);
   }
 
   handleSubmit(e){
-
-    firebase.firestore().collection('notepad')
-    .add({
+    //for  new note submit
+    firebaseDbAdd({
       heading:this.state.heading,
       author: this.state.author,
-      content:this.state.content,
-    })
-    .catch(
-      error=> {console.error('Error adding document: ', error)}
-    );
+      content:this.state.content,},firebaseColRef);
     this.setState({
       heading:'',
       author:'',
@@ -88,68 +75,35 @@ class NoteBuild extends Component {
    }
 
    handleDialogClose(){
+     //close note edit dialog
      this.dialogStateReset();
    }
 
   handleDialogUpdate(e){
-
-    e.preventDefault();
-    firebase.firestore().collection('notepad').doc(this.state.dialogId)
-    .update({
+    //edited note submit
+    firebaseDbUpdate({
       heading:this.state.dialogheading,
       author: this.state.dialogauthor,
       content:this.state.dialogcontent,
-    })
-    .catch(function(error) {
-        console.error('Error updating document: ', error);
-    });
+    },firebaseColRef,this.state.dialogId)
     this.dialogStateReset();
+    e.preventDefault();
   }
 
   componentWillMount(){
+    //init firebase
+    firebaseColRef=firebaseInit();
+  }
 
-    const docRef= firebase.firestore().collection('notepad');
-    docRef.onSnapshot( //listen for real time data updating
+  componentDidMount(){
+
+    firebaseColRef.onSnapshot( //listen for real time data updating
       docs=> docs.docChanges().forEach(
         change=>{
-
-          let tempState;
-          if (change.type === 'added') {
-            tempState =
-              [...this.state.notes,
-                {
-                  heading: change.doc.data().heading,
-                  author : change.doc.data().author,
-                  content: change.doc.data().content,
-                  id     : change.doc.id,
-                  like   : change.doc.data().like,
-                }
-              ];
-          }
-          if (change.type === 'removed'){
-            tempState =
-              this.state.notes.filter(
-                item=> change.doc.id !== item.id
-              );
-          }
-          if (change.type === 'modified'){
-            tempState =
-              this.state.notes.map(
-                item=> {
-                  if (change.doc.id === item.id) {
-                    item.heading =change.doc.data().heading;
-                    item.author  =change.doc.data().author;
-                    item.content =change.doc.data().content;
-                    item.like =change.doc.data().like;
-                  }
-                  return item;
-                }
-              );
-          }
+          let notes = firebaseDbChangeType(this.state.notes,change);
           this.setState({
-            notes:tempState
-          })
-
+            notes
+          });
         })
     )
   }
