@@ -1,6 +1,6 @@
 import React from 'react';
 import FormField from './FormField';
-import FormSubmit from './FormSubmit';
+import FormButton from './FormButton';
 
 const styles = {
     display: 'flex',
@@ -8,11 +8,11 @@ const styles = {
 };
 
 const Form = (props)=>{
-  const {onChange,onSubmit,currentData,} = props;
+  const {onChange,onSubmit,currentData,onUpLoad} = props;
   return (
     <form style={styles} onSubmit={onSubmit}>
-      <FormField currentData={currentData} onChange = {onChange}/>
-      <FormSubmit />
+      <FormField currentData={currentData} onChange = {onChange} />
+      <FormButton onChange={onUpLoad} />
     </form>
   );
 }
