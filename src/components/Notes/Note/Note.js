@@ -64,7 +64,7 @@ const Note = (props)=>{
             subheader: classes.subheader
           }}
           title={singleInfo.heading}
-          subheader={singleInfo.time}
+          subheader={singleInfo.timeAdd.toDate().toDateString()}
           avatar={
             <Avatar className={classes.avatar}>{singleInfo.author}</Avatar>
           }

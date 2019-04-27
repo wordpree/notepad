@@ -3,9 +3,9 @@ import Notes from '../components/Notes/Notes';
 import Form from '../components/Form/Form';
 import DialogSet from '../components/DialogSet/DialogSet';
 import Typography from '@material-ui/core/Typography';
-import {firebaseInit,firebaseDbDelete,firebaseDbAdd,firebaseDbUpdate,firebaseDbChangeType} from '../Util/firebase';
+import {firebaseInit,firebaseDbDelete,firebaseDbAdd,firebaseDbUpdate,firebaseDbChangeType,firebaseImgUpload} from '../Util/firebase';
 
-let firebaseColRef;
+let firebaseRef ={};
 
 class NoteBuild extends Component {
 
@@ -23,7 +23,7 @@ class NoteBuild extends Component {
 
   hanldeFavoriteIconClick(id,like){
     //Favorite icon update
-    firebaseDbUpdate({like:!like},firebaseColRef,id)
+    firebaseDbUpdate({like:!like},firebaseRef.dbCollectionRef,id)
   }
 
   dialogStateReset(){
@@ -43,6 +43,12 @@ class NoteBuild extends Component {
     });
   }
 
+  handleUpLoadChange(e){
+    //upload area
+    const file = e.target.files[0];
+    firebaseImgUpload(firebaseRef.storageRef,file);
+  }
+
   handleEdit(field){
     //note edit
     this.setState({
@@ -57,7 +63,7 @@ class NoteBuild extends Component {
 
   handleDelete(id){
     //note delete
-    firebaseDbDelete(id,firebaseColRef);
+    firebaseDbDelete(id,firebaseRef.dbCollectionRef);
   }
 
   handleSubmit(e){
@@ -65,7 +71,8 @@ class NoteBuild extends Component {
     firebaseDbAdd({
       heading:this.state.heading,
       author: this.state.author,
-      content:this.state.content,},firebaseColRef);
+      timeAdd:new Date(),
+      content:this.state.content,},firebaseRef.dbCollectionRef);
     this.setState({
       heading:'',
       author:'',
@@ -85,19 +92,19 @@ class NoteBuild extends Component {
       heading:this.state.dialogheading,
       author: this.state.dialogauthor,
       content:this.state.dialogcontent,
-    },firebaseColRef,this.state.dialogId)
+    },firebaseRef.dbCollectionRef,this.state.dialogId)
     this.dialogStateReset();
     e.preventDefault();
   }
 
   componentWillMount(){
     //init firebase
-    firebaseColRef=firebaseInit();
+    firebaseRef =firebaseInit();
   }
 
   componentDidMount(){
 
-    firebaseColRef.onSnapshot( //listen for real time data updating
+    firebaseRef.dbCollectionRef.onSnapshot( //listen for real time data updating
       docs=> docs.docChanges().forEach(
         change=>{
           let notes = firebaseDbChangeType(this.state.notes,change);
@@ -140,6 +147,7 @@ class NoteBuild extends Component {
           onChange={this.handleChange.bind(this)}
           onSubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
+          onUpLoad={this.handleUpLoadChange.bind(this)}
         />
         <Notes
           info = {this.state.notes}
