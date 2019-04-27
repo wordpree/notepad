@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const config = {
   apiKey: "AIzaSyCK3qVnAYjXV9WJPAABgpxskR9ojmXwR4g",
@@ -12,11 +13,15 @@ const config = {
 
 export function firebaseInit() {
   const firestore = firebase.apps.length ? firebase.app().firestore() : firebase.initializeApp(config).firestore()
-  return firestore.collection('notepad');
+  const firebaseRef ={
+    dbCollectionRef:firestore.collection('notepad'),
+    storageRef:firebase.storage().ref(),
+  }
+  return  firebaseRef;
 }
 
 export function firebaseDbUpdate(data,firebaseColRef,id){
-  firebase.firestore().collection('notepad').doc(id)
+  firebaseColRef.doc(id)
   .update(data)
   .catch(function(error) {
       console.error('Error updating document: ', error);
@@ -49,6 +54,7 @@ export function firebaseDbChangeType(notes,change){
           content: change.doc.data().content,
           id     : change.doc.id,
           like   : change.doc.data().like,
+          timeAdd: change.doc.data().timeAdd,
         }
       ];
       break;
@@ -73,7 +79,38 @@ export function firebaseDbChangeType(notes,change){
       );
       break;
     default:
-      tempState=[];  
+      tempState=[];
   }
   return tempState;
+}
+
+export function firebaseImgUpload(storageRef,file){
+  const uploadTask = storageRef.child('notes/'+file.name).put(file);
+  uploadTask.on('state_changed',
+    function(snapshot){
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+    },
+    function(err){
+      switch (err.code) {
+        case 'storage/unauthorized':
+          // User doesn't have permission to access the object
+          break;
+        case 'storage/canceled':
+          // User canceled the upload
+          console.log('user canceled upload');
+          break;
+        case 'storage/unknown':
+          // Unknown error occurred, inspect error.serverResponse
+          break;
+        default:
+          return;
+      }
+    },
+    function(){
+      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        console.log('File available at', downloadURL);
+      });
+    }
+  )
 }
