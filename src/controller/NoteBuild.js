@@ -15,6 +15,7 @@ class NoteBuild extends Component {
     author:'',
     content:'',
     imgUrl:'',
+    uploaded:false,
     open:false,
     dialogheading:'',
     dialogauthor:'',
@@ -48,9 +49,9 @@ class NoteBuild extends Component {
     //upload area
     const _ =this;
     const file = e.target.files[0];
-    const uploadTask = firebaseImgUpload(firebaseRef.storageRef,file);
 
     if (file) {
+      const uploadTask = firebaseImgUpload(firebaseRef.storageRef,file);
       uploadTask.on('state_changed',
         snapshot=>{
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -73,7 +74,7 @@ class NoteBuild extends Component {
         },
         ()=>{
           uploadTask.snapshot.ref.getDownloadURL().then(function(imgUrl) {
-            _.setState({imgUrl});
+            _.setState({imgUrl,uploaded:true});
           })
         }
       )
@@ -112,6 +113,7 @@ class NoteBuild extends Component {
       author:'',
       content:'',
       imgUrl:'',
+      uploaded:false,
     });
     e.preventDefault();
    }
@@ -183,6 +185,7 @@ class NoteBuild extends Component {
           onSubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
           onUpLoad={this.handleUpLoad.bind(this)}
+          isUploaded={this.state.uploaded}
         />
         <Notes
           info = {this.state.notes}

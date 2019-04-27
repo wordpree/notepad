@@ -1,10 +1,10 @@
 import React from 'react';
 import InputButton from '../InputButton/InputButton';
 
-const FormButton = ({onChange})=> {
+const FormButton = ({onChange,isUploaded})=> {
   const button ={
     file:{type:'file',id:'contained-button-file',text:'Upload Image',name:'btnFile',onChange:onChange},
-    submit:{type:'submit',id:'note-submit',text:'add new',name:'btnSub'},
+    submit:{type:'submit',id:'note-submit',text:'add new',name:'btnSub',upload:isUploaded},
   }
   return (
     <div className='formBtn' style={{display:'flex',flexGrow:1,justifyContent:'space-between'}}>

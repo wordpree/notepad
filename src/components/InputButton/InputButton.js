@@ -15,7 +15,7 @@ const styles = {
 
 const InputButton = ({btnInfo,classes})=> {
 
-  let {id ,type ,text,name,onChange} =btnInfo;
+  let {id ,type ,text,name,onChange,upload} =btnInfo;
   const insider = onChange ? {
     onChange:onChange,
     id:id,
@@ -25,6 +25,7 @@ const InputButton = ({btnInfo,classes})=> {
   {
     id:id,
     type:type,
+    disabled:upload===false,
   };
   return (
   <div className='input'>

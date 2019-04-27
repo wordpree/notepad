@@ -8,11 +8,11 @@ const styles = {
 };
 
 const Form = (props)=>{
-  const {onChange,onSubmit,currentData,onUpLoad} = props;
+  const {onChange,onSubmit,currentData,onUpLoad,isUploaded} = props;
   return (
     <form style={styles} onSubmit={onSubmit}>
       <FormField currentData={currentData} onChange = {onChange} />
-      <FormButton onChange={onUpLoad} />
+      <FormButton onChange={onUpLoad} isUploaded={isUploaded} />
     </form>
   );
 }
