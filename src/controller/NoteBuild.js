@@ -14,6 +14,7 @@ class NoteBuild extends Component {
     heading:'',
     author:'',
     content:'',
+    imgUrl:'',
     open:false,
     dialogheading:'',
     dialogauthor:'',
@@ -23,7 +24,7 @@ class NoteBuild extends Component {
 
   hanldeFavoriteIconClick(id,like){
     //Favorite icon update
-    firebaseDbUpdate({like:!like},firebaseRef.dbCollectionRef,id)
+    firebaseDbUpdate({like:!like},firebaseRef.dbCollectionRef,id);
   }
 
   dialogStateReset(){
@@ -43,10 +44,41 @@ class NoteBuild extends Component {
     });
   }
 
-  handleUpLoadChange(e){
+  handleUpLoad(e){
     //upload area
+    const _ =this;
     const file = e.target.files[0];
-    firebaseImgUpload(firebaseRef.storageRef,file);
+    const uploadTask = firebaseImgUpload(firebaseRef.storageRef,file);
+
+    if (file) {
+      uploadTask.on('state_changed',
+        snapshot=>{
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+        },
+        err=>{
+          switch (err.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              console.log('user canceled upload');
+              break;
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+            default:
+          }
+        },
+        ()=>{
+          uploadTask.snapshot.ref.getDownloadURL().then(function(imgUrl) {
+            _.setState({imgUrl});
+          })
+        }
+      )
+    }
+  e.preventDefault();
   }
 
   handleEdit(field){
@@ -72,11 +104,14 @@ class NoteBuild extends Component {
       heading:this.state.heading,
       author: this.state.author,
       timeAdd:new Date(),
-      content:this.state.content,},firebaseRef.dbCollectionRef);
+      content:this.state.content,
+      imgUrl:this.state.imgUrl,
+    },firebaseRef.dbCollectionRef);
     this.setState({
       heading:'',
       author:'',
       content:'',
+      imgUrl:'',
     });
     e.preventDefault();
    }
@@ -147,7 +182,7 @@ class NoteBuild extends Component {
           onChange={this.handleChange.bind(this)}
           onSubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
-          onUpLoad={this.handleUpLoadChange.bind(this)}
+          onUpLoad={this.handleUpLoad.bind(this)}
         />
         <Notes
           info = {this.state.notes}

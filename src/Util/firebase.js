@@ -55,6 +55,7 @@ export function firebaseDbChangeType(notes,change){
           id     : change.doc.id,
           like   : change.doc.data().like,
           timeAdd: change.doc.data().timeAdd,
+          imgUrl:  change.doc.data().imgUrl,
         }
       ];
       break;
@@ -72,6 +73,7 @@ export function firebaseDbChangeType(notes,change){
             item.heading =change.doc.data().heading;
             item.author  =change.doc.data().author;
             item.content =change.doc.data().content;
+            item.imgUrl  =change.doc.data().imgUrl;
             item.like    =change.doc.data().like;
           }
           return item;
@@ -85,32 +87,8 @@ export function firebaseDbChangeType(notes,change){
 }
 
 export function firebaseImgUpload(storageRef,file){
+
   const uploadTask = storageRef.child('notes/'+file.name).put(file);
-  uploadTask.on('state_changed',
-    function(snapshot){
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-    },
-    function(err){
-      switch (err.code) {
-        case 'storage/unauthorized':
-          // User doesn't have permission to access the object
-          break;
-        case 'storage/canceled':
-          // User canceled the upload
-          console.log('user canceled upload');
-          break;
-        case 'storage/unknown':
-          // Unknown error occurred, inspect error.serverResponse
-          break;
-        default:
-          return;
-      }
-    },
-    function(){
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
-      });
-    }
-  )
+  return uploadTask;
+
 }

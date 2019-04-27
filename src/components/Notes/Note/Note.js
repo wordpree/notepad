@@ -22,10 +22,15 @@ const styles = {
     backgroundColor: '#FF7A66',
   },
   card: {
-    backgroundColor:'#5c6bc0',
+    maxWidth:380,
+    backgroundColor: '#5c6bc0',
     '&:hover': {
       backgroundColor: fade('#5c6bc0',0.9)
     }
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
   },
   title: {
     color:'white',
@@ -57,7 +62,7 @@ const Note = (props)=>{
   let {singleInfo,classes,onDelete,onEdit,onLike} = props;
   return (
     <React.Fragment>
-      <Card className={classes.card}>
+      <Card  className={classes.card}>
         <CardHeader
           classes={{
             title: classes.title,
@@ -70,7 +75,7 @@ const Note = (props)=>{
           }
         >
         </CardHeader>
-        {/*<CardMedia></CardMedia>*/}
+        <CardMedia image={singleInfo.imgUrl}  className={classes.media}/>
         <CardContent>
           <Typography component='p'>
             {singleInfo.content}
