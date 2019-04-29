@@ -54,7 +54,7 @@ export function firebaseDbChangeType(notes,change){
           content: change.doc.data().content,
           id     : change.doc.id,
           like   : change.doc.data().like,
-          timeAdd: change.doc.data().timeAdd,
+          timeAdd: change.doc.data().timeAdd.toDate().toDateString(),
           imgUrl:  change.doc.data().imgUrl,
         }
       ];

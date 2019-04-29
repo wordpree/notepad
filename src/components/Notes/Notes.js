@@ -20,8 +20,9 @@ const styles = theme=> ({
 })
 
 const Notes = (props)=>{
-  let {info,classes,noteDelete,noteEdit,noteLike} = props;
-  const notes = info.map(item=>
+  let {info,classes,noteDelete,noteEdit,noteLike,searchTerm} = props;
+  //filter out unmatching criteria
+  const notes = info.filter(item=>`${item.heading} ${item.author} ${item.timeAdd}`.toUpperCase().indexOf(searchTerm.toUpperCase())>-1).map(item=>
     <Grid key={item.id} item xs={12} md={6} lg={4} className={classes.item} >
       <Note
         singleInfo={item}

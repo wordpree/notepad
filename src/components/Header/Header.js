@@ -67,7 +67,7 @@ const styles = theme => ({
   },
 });
 
-const Header = ({classes})=>{
+const Header = ({classes,value,onChange})=>{
 
   return (
     <MuiThemeProvider theme={muitheme}>
@@ -82,9 +82,11 @@ const Header = ({classes})=>{
               <SearchIcon />
             </div>
             <InputBase
+              onChange = {onChange}
+              value ={value}
               className={classes.inputInput}
               classes={{root:classes.inputRoot}}
-              placeholder="title,author,date…" />
+              placeholder="search…" />
           </div>
         </Toolbar>
       </AppBar>

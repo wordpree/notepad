@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../components/Header/Header';
 import Notes from '../components/Notes/Notes';
 import Form from '../components/Form/Form';
 import DialogSet from '../components/DialogSet/DialogSet';
@@ -10,6 +11,7 @@ let firebaseRef ={};
 class NoteBuild extends Component {
 
   state= {
+    searchTerm:'',
     notes:[],
     heading:'',
     author:'',
@@ -21,6 +23,13 @@ class NoteBuild extends Component {
     dialogauthor:'',
     dialogcontent:'',
     dialogId:'',
+  }
+
+  hanldeSearchChange(e){
+    //header search input area
+    this.setState({
+      searchTerm: e.target.value
+    });
   }
 
   hanldeFavoriteIconClick(id,like){
@@ -39,7 +48,7 @@ class NoteBuild extends Component {
   }
 
   handleChange(e){
-    //input area
+    //form input area
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -145,36 +154,43 @@ class NoteBuild extends Component {
   render() {
 
     return (
-      <div className="App">
-        <Typography
-              variant='h5'
-              paragraph={true}
-              align='center'
-              style={{marginTop:'1em',}}
-        >
-          Compose Your Note Below
-        </Typography>
-        <Form
-          onChange={this.handleChange.bind(this)}
-          onSubmit={this.handleSubmit.bind(this)}
-          currentData={this.getCurrentData()}
-          onUpLoad={this.handleUpLoad.bind(this)}
-          isBtnDisabled={this.state.uploadProgress}
-        />
-        <Notes
-          info = {this.state.notes}
-          noteDelete={this.handleDelete.bind(this)}
-          noteEdit={this.handleEdit.bind(this)}
-          noteLike={this.hanldeFavoriteIconClick.bind(this)}
-        />
-        <DialogSet
-          data={this.getDialogData()}
-          open={this.state.open}
-          onDialogClose={this.handleDialogClose.bind(this)}
-          onDialogUpdate={this.handleDialogUpdate.bind(this)}
-          onChange={this.handleChange.bind(this)}
-        />
-      </div>
+      <React.Fragment>
+        <header className='header-entry'>
+          <Header onChange={this.hanldeSearchChange.bind(this)} value={this.state.searchTerm}/>
+        </header>
+        <main className="content-entry" style={{maxWidth:'90%',
+        margin: 'auto'}}>
+          <Typography
+                variant='h5'
+                paragraph={true}
+                align='center'
+                style={{marginTop:'1em',}}
+          >
+            Compose Your Note Below
+          </Typography>
+          <Form
+            onChange={this.handleChange.bind(this)}
+            onSubmit={this.handleSubmit.bind(this)}
+            currentData={this.getCurrentData()}
+            onUpLoad={this.handleUpLoad.bind(this)}
+            isBtnDisabled={this.state.uploadProgress}
+          />
+          <Notes
+            info = {this.state.notes}
+            searchTerm ={this.state.searchTerm}
+            noteDelete={this.handleDelete.bind(this)}
+            noteEdit={this.handleEdit.bind(this)}
+            noteLike={this.hanldeFavoriteIconClick.bind(this)}
+          />
+          <DialogSet
+            data={this.getDialogData()}
+            open={this.state.open}
+            onDialogClose={this.handleDialogClose.bind(this)}
+            onDialogUpdate={this.handleDialogUpdate.bind(this)}
+            onChange={this.handleChange.bind(this)}
+          />
+        </main>
+      </React.Fragment>
     );
   }
 }

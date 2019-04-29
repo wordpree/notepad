@@ -1,10 +1,10 @@
 import React from 'react';
-import Layout from './components/Layout/Layout';
+import NoteBuild from './controller/NoteBuild';
 
 const App = ()=> {
 
     return (
-        <Layout />
+        <NoteBuild />
     );
 }
 
