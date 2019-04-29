@@ -17,6 +17,7 @@ const FormField = ({currentData,onChange})=>{
             fullWidth=
             {item==='content' || item==='dialogcontent'}
             onChange = {onChange}
+            required
         />
     )
   )

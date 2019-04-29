@@ -15,17 +15,18 @@ const styles = {
 
 const InputButton = ({btnInfo,classes})=> {
 
-  let {id ,type ,text,name,onChange,upload} =btnInfo;
+  let {id ,type ,text,name,onChange,btnDisable} =btnInfo;
   const insider = onChange ? {
     onChange:onChange,
     id:id,
     type:type,
     accept:'image/*',
+    name:name,
   }:
   {
     id:id,
     type:type,
-    disabled:upload===false,
+    name:name,
   };
   return (
   <div className='input'>
@@ -33,9 +34,9 @@ const InputButton = ({btnInfo,classes})=> {
         {...insider} style={{display:'none'}}
       />
       <label htmlFor={id}>
-       <Button variant='outlined' component="span" className={classes.button }>
-         {text}
-       </Button>
+        <Button disabled={btnDisable} variant='outlined' component="span" className={classes.button }>
+          {text}
+        </Button>
       </label>
   </div>
   );

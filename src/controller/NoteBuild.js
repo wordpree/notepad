@@ -14,8 +14,8 @@ class NoteBuild extends Component {
     heading:'',
     author:'',
     content:'',
-    imgUrl:'',
-    uploaded:false,
+    imgUrl:null,
+    uploadProgress:false,
     open:false,
     dialogheading:'',
     dialogauthor:'',
@@ -54,6 +54,7 @@ class NoteBuild extends Component {
       const uploadTask = firebaseImgUpload(firebaseRef.storageRef,file);
       uploadTask.on('state_changed',
         snapshot=>{
+          _.setState({uploadProgress:true});
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log('Upload is ' + progress + '% done');
         },
@@ -74,7 +75,7 @@ class NoteBuild extends Component {
         },
         ()=>{
           uploadTask.snapshot.ref.getDownloadURL().then(function(imgUrl) {
-            _.setState({imgUrl,uploaded:true});
+            _.setState({imgUrl,uploadProgress:false});
           })
         }
       )
@@ -100,23 +101,25 @@ class NoteBuild extends Component {
   }
 
   handleSubmit(e){
-    //for  new note submit
-    firebaseDbAdd({
-      heading:this.state.heading,
-      author: this.state.author,
-      timeAdd:new Date(),
-      content:this.state.content,
-      imgUrl:this.state.imgUrl,
-    },firebaseRef.dbCollectionRef);
-    this.setState({
-      heading:'',
-      author:'',
-      content:'',
-      imgUrl:'',
-      uploaded:false,
-    });
+
     e.preventDefault();
-   }
+    if(this.state.imgUrl) {
+      //for  new note submit
+      firebaseDbAdd({
+        heading:this.state.heading,
+        author: this.state.author,
+        timeAdd:new Date(),
+        content:this.state.content,
+        imgUrl:this.state.imgUrl,
+      },firebaseRef.dbCollectionRef);
+      this.setState({
+        heading:'',
+        author:'',
+        content:'',
+        imgUrl:null,
+      });
+    }
+  }
 
    handleDialogClose(){
      //close note edit dialog
@@ -185,7 +188,7 @@ class NoteBuild extends Component {
           onSubmit={this.handleSubmit.bind(this)}
           currentData={this.getCurrentData()}
           onUpLoad={this.handleUpLoad.bind(this)}
-          isUploaded={this.state.uploaded}
+          isBtnDisabled={this.state.uploadProgress}
         />
         <Notes
           info = {this.state.notes}
