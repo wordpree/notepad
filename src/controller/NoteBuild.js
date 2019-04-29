@@ -47,40 +47,11 @@ class NoteBuild extends Component {
 
   handleUpLoad(e){
     //upload area
-    const _ =this;
     const file = e.target.files[0];
-
     if (file) {
-      const uploadTask = firebaseImgUpload(firebaseRef.storageRef,file);
-      uploadTask.on('state_changed',
-        snapshot=>{
-          _.setState({uploadProgress:true});
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-        },
-        err=>{
-          switch (err.code) {
-            case 'storage/unauthorized':
-              // User doesn't have permission to access the object
-              break;
-            case 'storage/canceled':
-              // User canceled the upload
-              console.log('user canceled upload');
-              break;
-            case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse
-              break;
-            default:
-          }
-        },
-        ()=>{
-          uploadTask.snapshot.ref.getDownloadURL().then(function(imgUrl) {
-            _.setState({imgUrl,uploadProgress:false});
-          })
-        }
-      )
+      firebaseImgUpload.call(this,firebaseRef.storageRef,file);
     }
-  e.preventDefault();
+    e.preventDefault();
   }
 
   handleEdit(field){
