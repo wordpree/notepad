@@ -3,7 +3,7 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 const config = {
-  apiKey: "AIzaSyCK3qVnAYjXV9WJPAABgpxskR9ojmXwR4g",
+  apiKey: process.env.REACT_NOTE_FIREBASE_APIKEY,
   authDomain: "notepad-b5762.firebaseapp.com",
   databaseURL: "https://notepad-b5762.firebaseio.com",
   projectId: "notepad-b5762",
